@@ -1,63 +1,42 @@
 /*
-* The following are considered valid phone number formats:
-* 555-555-5555
-* (555)555-5555
-* (555) 555-5555
-* 555 555 5555
-* 5555555555
-* 1 555 555 5555
-* */
+ * The following are considered valid phone number formats:
+ * 555-555-5555
+ * (555)555-5555
+ * (555) 555-5555
+ * 555 555 5555
+ * 5555555555
+ * 1 555 555 5555
+ * 1 555-555-5555
+ * 1 (555) 555-5555
+ * 1(555)555-5555
+ * */
 
-const reg1 = new RegExp("1\\s");
+const reg1 = new RegExp("^1\\s?");
 const regParenth = new RegExp("\\(\\d{3}\\)\\s?");
-const regNum3 = new RegExp("\\d{3}");
+const regNum3 = new RegExp("\\d{3}\\s?");
 const regNum4 = new RegExp("\\d{4}$");
 
-console.log("(123) 456".match(regParenth.source + regNum3.source));
-
-console.log("1 234".match(/(?(reg1)/)))
+const regParenth10 = new RegExp(regParenth.source + regNum3.source + "-" + regNum4.source);	// Full 10-digit phone
+																							// number using parentheses
+const regNoParenth = new RegExp(
+	"(?:" + regNum3.source + "(?!-)" + regNum3.source + "(?!-)" + regNum4.source + "|" + regNum3.source + "(?<! )-" + regNum3.source + "(?<! )-" + regNum4.source + ")");	// Full 10-digit phone number without parentheses
+const reg1Full = new RegExp(reg1.source + "(" + regParenth10.source + "|" + regNoParenth.source + ")");
+const regNo1Full = new RegExp("^" + regParenth10.source + "|^" + regNoParenth.source);
 
 function telephoneCheck(str) {
-	if (str.search(/[^0-9-()\s]+/g) !== -1) {	// Contains anything other than " ", 0-9, "-", (, )
+	// Contains anything other than " ", 0-9, "-", (, )
+	if (str.search(/[^0-9-()\s]+/g) !== -1) {
 		return false;
 	}
 
-	if (str.search(/\s{2,}/g) !== -1) {	// Contains more than one space in a row
-		return false;
+	// Contains country code
+	if (str.replace(/\D/g, "").length === 11) {
+		console.log("length 11");
+		return str.search(reg1Full) !== -1;
 	}
 
-	const match1 = str.match("1");	// Search for number 1
-	if (match1 !== null) {
-		if (match1.length > 1) {	// Can only have one 1
-			return false;
-		}
-		if (str.search("1") !== 1) {	// Must be at beginning
-			return false;
-		}
-		if (str.charAt(1) !== " ") {	// Must be followed by a space
-			return false;
-		}
-	}
-
-	const searchParenth = str.search(/\(/);	// Search for left parentheses
-	if (searchParenth === -1) {
-		if (str.search(/\)/) !== -1) {	// Cannot contain right parentheses if no left parentheses
-			return false;
-		}
-	} else {
-		if (str.match(/\(/).length > 1) {	// Can only have one set of parentheses
-			return false;
-		}
-		if (str.charAt(0) !== /\(/ || str.charAt(4) !== /\)/) {	// Parentheses not in correct spaces
-			return false;
-		}
-	}
-
-	const searchDash = str.search("-");
-
-
-	return true;
+	// Numbers separated by " " or "-"
+	return str.search(regNo1Full) !== -1;
 }
 
-console.log(telephoneCheck("555-555-5555"));
-console.log(telephoneCheck("a"));
+console.log(telephoneCheck("11 555-555-5555"));
