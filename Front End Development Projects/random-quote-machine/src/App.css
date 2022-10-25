@@ -1,0 +1,64 @@
+#App {
+  text-align: center;
+  width: 35%;
+  height: 45%;
+  padding: 10px;
+  border: 3px solid #456ef0;
+  background-color: #4d2ff0;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  overflow: scroll;
+}
+
+#App a {
+  text-decoration: none;
+  color: black;
+}
+
+#footer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  margin-top: auto;
+  min-height: 32px;
+}
+
+#quote {
+  width: 100%;
+  text-align: center;
+}
+
+#author {
+  width: 100%;
+  text-align: right;
+  color: aliceblue;
+}
+
+#twitterContainer {
+  text-align: left;
+}
+
+#buttonContainer {
+  text-align: right;
+  margin-left: auto;
+}
+
+#text p {
+  text-align: left;
+  color: aliceblue;
+}
+
+#twitterLogo {
+  aspect-ratio: initial;
+  max-height: 40px;
+  min-height: 32px;
+}
+
+button {
+  background-color: #1ef0b1;
+  border: none;
+  border-radius: 3px;
+}
