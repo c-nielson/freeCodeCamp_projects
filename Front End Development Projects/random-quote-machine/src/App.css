@@ -62,3 +62,7 @@ button {
   border: none;
   border-radius: 3px;
 }
+
+#new-quote {
+  cursor: pointer;
+}

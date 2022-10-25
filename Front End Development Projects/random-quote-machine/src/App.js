@@ -12,7 +12,7 @@ const App = () => {
 
 	return (
 		<div id='App'>
-			<div id='quoteBox'>
+			<div id="quote-box">
 				<div id='text'>
 					<p>"{quote.quote}"</p>
 				</div>
