@@ -8,22 +8,14 @@
   border-radius: 10px;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: space-between;
   overflow: scroll;
+  align-content: space-between;
 }
 
 #App a {
   text-decoration: none;
   color: black;
-}
-
-#footer {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  width: 100%;
-  margin-top: auto;
-  min-height: 32px;
 }
 
 #quote {
@@ -35,15 +27,6 @@
   width: 100%;
   text-align: right;
   color: aliceblue;
-}
-
-#twitterContainer {
-  text-align: left;
-}
-
-#buttonContainer {
-  text-align: right;
-  margin-left: auto;
 }
 
 #text p {
@@ -65,4 +48,11 @@ button {
 
 #new-quote {
   cursor: pointer;
+}
+
+#footer {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }

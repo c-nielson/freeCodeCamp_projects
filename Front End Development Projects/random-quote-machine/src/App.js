@@ -1,7 +1,7 @@
 import './App.css';
 import { useState } from 'react';
 import { quotes } from './quotes';
-import twitterLogo from './twitter_rounded.png'
+import twitterLogo from './twitter_rounded.png';
 
 const App = () => {
 	const [quote, setQuote] = useState(quotes[Math.floor(Math.random() * quotes.length)]);
@@ -12,7 +12,7 @@ const App = () => {
 
 	return (
 		<div id='App'>
-			<div id="quote-box">
+			<div id='quote-box'>
 				<div id='text'>
 					<p>"{quote.quote}"</p>
 				</div>
@@ -22,16 +22,14 @@ const App = () => {
 				</div>
 			</div>
 
-			<div id="footer">
-				<div id='twitterContainer'>
-					<a id='tweet-quote' target='_blank' href={`https://twitter.com/intent/tweet?related=freecodecamp&text=${quote.quote} ${quote.author}`}>
+				<div id='footer'>
+					<a id='tweet-quote' target='_blank'
+					   href={`https://twitter.com/intent/tweet?related=freecodecamp&text=${quote.quote} ${quote.author}`}>
 						<img id='twitterLogo' src={twitterLogo} alt='Twitter Logo' />
 					</a>
+
+					<button id='new-quote' onClick={NewQuote}>New Quote</button>
 				</div>
-				<div id='buttonContainer'>
-					<button id='new-quote' onClick={NewQuote} >New Quote</button>
-				</div>
-			</div>
 		</div>
 	);
 };
