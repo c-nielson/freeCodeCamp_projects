@@ -47,17 +47,28 @@
 }
 
 .App-div {
-  border: 1px solid rgba(0,0,0,0.47);
   min-width: 5vw;
   box-shadow: 0 0 10px 1px #282c34;
 }
 
-#editor {
-  width: 40vw;
-  height: 20vh;
+#editor-div {
+  overflow: scroll;
+  border: 1px solid rgba(0,0,0,0.47);
 }
 
 #preview {
   width: 65vw;
   height: 60vh;
+  background-color: rgba(152,43,190,0.67);
+  padding: 5px;
+  overflow: scroll;
+}
+
+#editor {
+  width: 40vw;
+  height: 20vh;
+  max-height: 40vh;
+  resize: block;
+  background-color: rgba(152,43,190,0.67);
+  border: none;
 }

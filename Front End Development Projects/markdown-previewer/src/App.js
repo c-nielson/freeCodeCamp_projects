@@ -46,22 +46,20 @@ const App = () => {
 		'1. Use just 1s if you want!\n' +
 		'1. And last but not least, let\'s not forget embedded images:\n' +
 		'\n' +
-		'![freeCodeCamp Logo](https://cdn.freecodecamp.org/testable-projects-fcc/images/fcc_secondary.svg)\n' +
-		'');
+		'![freeCodeCamp Logo](https://cdn.freecodecamp.org/testable-projects-fcc/images/fcc_secondary.svg)\n'
+	);
 
 	const OnEditorChange = event => {
-		setMarkdown(marked.parse(event.target.value));
+		setMarkdown(() => (event.target.value));
 	};
 
   return (
 	  <div id='App'>
-		  <div id='editor' className='App-div'>
-			<textarea id='editor' defaultValue={markdown} onChange={OnEditorChange} />
+		  <div id='editor-div' className='App-div'>
+			<textarea id='editor' defaultValue={marked.parse(markdown)} onChange={OnEditorChange} />
 		  </div>
 
-		  <div id='preview' className='App-div'>
-			  {markdown}
-		  </div>
+		  <div id='preview' className='App-div' dangerouslySetInnerHTML={{__html: marked.parse(markdown)}} />
 	  </div>
   );
 };
