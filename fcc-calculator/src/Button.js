@@ -1,7 +1,10 @@
-const Button = (value) => {
+const Button = ({ buttonText, buttonType }) => {
+	let className = `button ${buttonType}`
+	if (buttonText === '0' || 'AC') className += ' button-wide'
+	if (buttonText === '=') className += ' button-tall'
 
 	return (
-		<div className="button">value</div>
+		<div className={className}>{buttonText}</div>
 	)
 }
 

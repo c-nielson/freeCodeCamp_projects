@@ -5,7 +5,7 @@ import NumberPad from './NumberPad'
 const Calculator = () => {
 	const [state, setState] = useState('0')
 
-	
+
 
 	return (
 		<div>
