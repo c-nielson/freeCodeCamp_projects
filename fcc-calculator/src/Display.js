@@ -1,6 +1,8 @@
-const Display = () => {
+const Display = ({ text }) => {
 	return (
-		<div></div>
+		<div id="display">
+			<span>{text}</span>
+		</div>
 	)
 }
 

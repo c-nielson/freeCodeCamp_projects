@@ -1,10 +1,9 @@
-const Button = ({ buttonText, buttonType }) => {
-	let className = `button ${buttonType}`
-	if (buttonText === '0' || 'AC') className += ' button-wide'
-	if (buttonText === '=') className += ' button-tall'
+const Button = ({ buttonText, buttonType, buttonClicked }) => {
 
 	return (
-		<div className={className}>{buttonText}</div>
+		<div className={`button-component ${buttonType} button${buttonText}`} onClick={buttonClicked}>
+			{buttonText}
+		</div>
 	)
 }
 
