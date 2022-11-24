@@ -1,44 +1,131 @@
+import { useState } from 'react'
 import Button from './Button'
 
 const NumberPad = ({
 	text,
-	setText,
-	evaluated,
-	setEvaluated
+	setText
 }) => {
-	const evaluate = () => {
-		setEvaluated(true)
-		return null
+	const [evaluated, setEvaluated] = useState(false)
+
+	const multiply = (eqn) => {
+		const match = eqn.match(/(\d+\.?\d*)X(\d+\.?\d*)/)
+		if (match === null) {
+			return eqn
+		}
+		return multiply(
+			eqn.replace(
+				match[0],
+				parseFloat((
+					+match[1] * +match[2]
+				).toFixed(3))
+			)
+		)
+	}
+
+	const divide = (eqn) => {
+		const match = eqn.match(/(\d+\.?\d*)\/(\d+\.?\d*)/)
+		if (match === null) {
+			return eqn
+		}
+		return multiply(
+			eqn.replace(match[0],
+				parseFloat((
+					+match[1] / +match[2]
+				).toFixed(3))
+			)
+		)
+	}
+
+	const add = (eqn) => {
+		const match = eqn.match(/(\d+\.?\d*)\+(\d+\.?\d*)/)
+		if (match === null) {
+			return eqn
+		}
+		console.log(match[0])
+		return multiply(
+			eqn.replace(
+				match[0],
+				parseFloat((
+					+match[1] + +match[2]
+				).toFixed(3))
+			)
+		)
+	}
+
+	const subtract = (eqn) => {
+		const match = eqn.match(/(\d+\.?\d*)-(\d+\.?\d*)/)
+		if (match === null) {
+			return eqn
+		}
+		return multiply(
+			eqn.replace(
+				match[0],
+				parseFloat((
+					+match[1] - +match[2]
+				).toFixed(3))
+			)
+		)
+	}
+
+	const pipe = (eqn, ...funcs) => funcs.reduce(
+		(arg, fn) => fn(arg),
+		eqn
+	)
+
+	const evaluate = (text) => {
+		return pipe(
+			text,
+			multiply,
+			divide,
+			add,
+			subtract
+		)
 	}
 
 	const handleButtonClick = (e) => {
 		console.log(e.target.className)
 		const buttonValue = e.target.textContent
-		switch (buttonValue) {
+
+		switch (e.target.className.split(' ')[1]) {
 			case 'AC':
+				setEvaluated(false)
 				setText('0')
 				break
-			case '=':
+
+			case 'Equals':
 				setText(evaluate(text))
+				setEvaluated(true)
 				break
-			case '0':
-				if (text.length > 1) {
-					setText(text + '0')
-					break
-				} else if (text !== '0') {
-					console.log(text)
-					setText(text + '0')
-					break
-				} else {
-					break
-				}
-			default:
-				// TODO: add evaulated logic for e.target.className Numeric and Operator
-				if (text.length === 1 && text === '0') {
+
+			case 'Operator':
+				// TODO: Need to add logic for negative numbers
+				setEvaluated(false)
+				setText(
+					(
+						text + buttonValue
+					)
+						.replace(/[+-/X]([+-/X])/, '$1')
+				)
+				break
+
+			case 'Numeric':
+				if (evaluated) {
 					setText(buttonValue)
+					setEvaluated(false)
 				} else {
-					setText(text + buttonValue)
+					setText(
+						(
+							text + buttonValue
+						)
+							.replace(/(?<=![0-9\.]|^)0+(\d+)/, '$1')
+							.replace(/\.{2,}/, '.')
+							.replace(/(\d*\.\d+)\./, '$1')
+					)
 				}
+				break
+
+			default:
+				break
 		}
 	}
 

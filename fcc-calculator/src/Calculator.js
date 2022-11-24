@@ -4,12 +4,11 @@ import NumberPad from './NumberPad'
 
 const Calculator = () => {
 	const [state, setState] = useState('0')
-	const [evaluated, setEvaluated] = useState(false)
 
 	return (
 		<div className="calculator">
 			<Display text={state} />
-			<NumberPad text={state} setText={setState} evaluated={evaluated} setEvaluated={setEvaluated} />
+			<NumberPad text={state} setText={setState} />
 		</div>
 	)
 }
