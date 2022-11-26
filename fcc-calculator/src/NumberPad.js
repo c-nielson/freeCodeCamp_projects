@@ -7,81 +7,97 @@ const NumberPad = ({
 }) => {
 	const [evaluated, setEvaluated] = useState(false)
 
-	// Matches either a negative number preceded by linestart or another operator OR a positive number
-	const negRegex = new RegExp(/(?<=^|\/|\+)-\d+\.?\d*/)
-	const posRegex = new RegExp(/\d+\.?\d*/)
-	const numberRegex = new RegExp('(' + negRegex.source + ')' + '|' + '(' + posRegex.source + ')')
+	// Matches a number with potentially a negative sign or other operator preceding it
+	const numberRegex = new RegExp(/([X/+]?-?)(\d+\.?\d*)/)
+	const createOperatorRegex = (op) => new RegExp(numberRegex.source + op + numberRegex.source)
+	const multiplyRegex = createOperatorRegex('X')
+	const divideRegex = createOperatorRegex('\\/')
+	const addRegex = createOperatorRegex('\\+')
+	const subtractRegex = createOperatorRegex('-')
+	const operatorWithNegative = new RegExp(/[X/+]-/)
+
+	const getNums = (match) => [
+		(
+			(
+				match[1] && (
+					match[1].match(operatorWithNegative) || match.index === 0
+				)
+			) ? '-' : ''
+		) + match[2],
+		match[3] + match[4]
+	]
 
 	const multiply = (eqn) => {
-		const match = eqn.match((
-			numberRegex.source
-		) + 'X' + (
-			numberRegex.source
-		))
-		if (match === null) {
+		const match = eqn.match(multiplyRegex)
+
+		if (!match) {
 			return eqn
 		}
+
+		const [num1, num2] = getNums(match)
+
 		return multiply(
 			eqn.replace(
-				match[0],
+				num1 + 'X' + num2,
 				parseFloat((
-					+match[1] * +match[2]
+					+num1 * +num2
 				).toFixed(5))
 			)
 		)
 	}
 
 	const divide = (eqn) => {
-		const match = eqn.match((
-			numberRegex.source
-		) + '/' + (
-			numberRegex.source
-		))
-		if (match === null) {
+		const match = eqn.match(divideRegex)
+
+		if (!match) {
 			return eqn
 		}
-		return multiply(
+
+		const [num1, num2] = getNums(match)
+
+		return divide(
 			eqn.replace(
-				match[0],
+				num1 + '/' + num2,
 				parseFloat((
-					+match[1] / +match[2]
+					+num1 / +num2
 				).toFixed(5))
 			)
 		)
 	}
 
 	const add = (eqn) => {
-		const match = eqn.match(
-			new RegExp(numberRegex.source + '+' + numberRegex.source)
-		)
-		if (match === null) {
+		const match = eqn.match(addRegex)
+
+		if (!match) {
 			return eqn
 		}
-		console.log(match[0])
-		return multiply(
+
+		const [num1, num2] = getNums(match)
+
+		return add(
 			eqn.replace(
-				match[0],
+				num1 + '+' + num2,
 				parseFloat((
-					+match[1] + +match[2]
+					+num1 + +num2
 				).toFixed(5))
 			)
 		)
 	}
 
 	const subtract = (eqn) => {
-		const match = eqn.match((
-			numberRegex.source
-		) + '-' + (
-			numberRegex.source
-		))
-		if (match === null) {
+		const match = eqn.match(subtractRegex)
+
+		if (!match) {
 			return eqn
 		}
-		return multiply(
+
+		const [num1, num2] = getNums(match)
+
+		return subtract(
 			eqn.replace(
-				match[0],
+				num1 + '-' + num2,
 				parseFloat((
-					+match[1] - +match[2]
+					+num1 - +num2
 				).toFixed(5))
 			)
 		)
@@ -138,7 +154,7 @@ const NumberPad = ({
 						(
 							text + buttonValue
 						)
-							.replace(/(?<=![0-9\.]|^)0+(\d+)/, '$1')
+							.replace(/(?<=![0-9.]|^)0+(\d+)/, '$1')
 							.replace(/\.{2,}/, '.')
 							.replace(/(\d*\.\d+)\./, '$1')
 					)
